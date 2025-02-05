@@ -1,5 +1,4 @@
 const User = require("../models/user");
-const router = require("../routes");
 const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../utils/errors");
 
 // GET / users
