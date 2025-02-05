@@ -11,7 +11,7 @@ mongoose
   .catch(console.error);
 
 app.use(express.json());
-app.use((req, res, next) => {
+app.use((req, next) => {
   req.user = {
     _id: "67a280ac23258c2c7b731ef7",
   };
