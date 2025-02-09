@@ -13,7 +13,7 @@ const {
 
 const getCurrentUser = (req, res) => {
   const userId = req.user._id;
-  User.findById(userId)
+  findById(userId)
     .orFail()
     .then((user) => res.status(OK).send(user))
     .catch((error) => {
@@ -37,7 +37,7 @@ const getCurrentUser = (req, res) => {
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
-  User.findOne({ email })
+  findOne({ email })
     .select("+password")
     .then((existingUser) => {
       if (existingUser) {
@@ -48,7 +48,7 @@ const createUser = (req, res) => {
       }
       return bcrypt.hash(password, 10);
     })
-    .then((hash) => User.create({ name, avatar, email, password: hash }))
+    .then((hash) => create({ name, avatar, email, password: hash }))
     .then((user) => {
       const userCopy = user.toObject();
       delete userCopy.password;
@@ -81,7 +81,7 @@ const login = (req, res) => {
       .send({ message: "Email and password required" });
   }
 
-  return User.findUserByCredentials(email, password)
+  return findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
@@ -127,4 +127,4 @@ const updateUser = (req, res) => {
     });
 };
 
-module.exports = { getCurrentUser, createUser, login, updateUser };
+export default { getCurrentUser, createUser, login, updateUser };
