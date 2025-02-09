@@ -13,7 +13,7 @@ const {
 
 const getCurrentUser = (req, res) => {
   const userId = req.user._id;
-  findById(userId)
+  User.findById(userId)
     .orFail()
     .then((user) => res.status(OK).send(user))
     .catch((error) => {
@@ -37,7 +37,7 @@ const getCurrentUser = (req, res) => {
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
-  findOne({ email })
+  User.findOne({ email })
     .select("+password")
     .then((existingUser) => {
       if (existingUser) {
@@ -48,7 +48,7 @@ const createUser = (req, res) => {
       }
       return bcrypt.hash(password, 10);
     })
-    .then((hash) => create({ name, avatar, email, password: hash }))
+    .then((hash) => User.create({ name, avatar, email, password: hash }))
     .then((user) => {
       const userCopy = user.toObject();
       delete userCopy.password;
@@ -81,7 +81,7 @@ const login = (req, res) => {
       .send({ message: "Email and password required" });
   }
 
-  return findUserByCredentials(email, password)
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
