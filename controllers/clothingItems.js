@@ -13,7 +13,7 @@ const getClothingItem = (req, res, next) => {
     });
 };
 
-const createClothingItem = (req, res) => {
+const createClothingItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
   ClothingItem.create({
     name,

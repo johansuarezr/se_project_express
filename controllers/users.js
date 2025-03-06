@@ -76,7 +76,7 @@ const login = (req, res, next) => {
     });
 };
 
-const updateUser = (req, res) => {
+const updateUser = (req, res, next) => {
   const { name, avatar } = req.body;
   const { _id } = req.user;
 
